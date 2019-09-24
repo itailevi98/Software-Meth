@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ListView?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SongLib.Controller">
-    <children>
-        <Label fx:id="label" text="Label" />
-    </children>
-</StackPane>
+<AnchorPane 
+	xmlns="http://javafx.com/javafx/11.0.1" 
+	xmlns:fx="http://javafx.com/fxml/1" 
+	fx:controller="SongLib.Controller">
+	
+	<ListView fx:id="listView"
+		AnchorPane.topAnchor = "10"
+		AnchorPane.leftAnchor = "10"
+		AnchorPane.rightAnchor = "10"
+		AnchorPane.bottomAnchor = "10"/>
+</AnchorPane> 
