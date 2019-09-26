@@ -1,7 +1,6 @@
 package SongLib;
 
 import java.io.FileReader;
-//import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -40,9 +39,10 @@ public class Controller {
     public Button saveSong = new Button();
     public Button deleteButton = new Button();
     public Button cancelButton = new Button();
+    public Button addButton = new Button();
    
   
-    Object obj;
+    public static Object obj;
     JSONArray songList;
     JSONObject selectedSong =new JSONObject();
     
@@ -269,9 +269,16 @@ public class Controller {
         	}
         	
         	
+        	songList.remove(index);
+        	
+        	
+        	
     		
     		
     	}
+    	
+    	
+    	
     	
     }
     
