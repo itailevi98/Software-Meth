@@ -14,7 +14,7 @@ public class Main extends Application {
 //    	Parent root = FXMLLoader.load(getClass().getResource("hellofx.fxml"));
 //    	FXMLLoader loader= new FXMLLoader();
     
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("hellofx.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("SongLib.fxml"));
     	Parent root = (Parent) loader.load();
     	    	
         Controller controller = loader.getController();
