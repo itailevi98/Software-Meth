@@ -10,15 +10,15 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SongLib.Controller">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="208.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="208.0">
          <children>
-            <ListView layoutY="41.0" prefHeight="457.0" prefWidth="209.0" />
+            <ListView fx:id="listView" layoutY="41.0" prefHeight="442.0" prefWidth="209.0" />
             <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="87.0" text="Song List" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="231.0" layoutY="41.0" minHeight="0.0" minWidth="0.0" prefHeight="463.0" prefWidth="461.0">
+      <AnchorPane layoutX="231.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="461.0">
          <children>
-            <Button layoutX="185.0" layoutY="422.0" mnemonicParsing="false" text="Edit Song Details" />
+            <Button fx:id="editButton" layoutX="185.0" layoutY="422.0" mnemonicParsing="false" onAction="#editSong" text="Edit Song Details" />
             <Label layoutX="159.0" layoutY="14.0" prefHeight="17.0" prefWidth="137.0" text="Song Details:" />
             <GridPane layoutX="27.0" layoutY="67.0" prefHeight="320.0" prefWidth="421.0" AnchorPane.leftAnchor="27.0">
                <columnConstraints>
@@ -36,10 +36,10 @@
                   <Label text="Artist:" GridPane.rowIndex="1" />
                   <Label text="Album:" GridPane.rowIndex="2" />
                   <Label text="Year:" GridPane.rowIndex="3" />
-                  <Label text="-Empty-" GridPane.columnIndex="1" />
-                  <Label text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="songName" text="-Empty-" GridPane.columnIndex="1" />
+                  <Label fx:id="artistName" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="albumName" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="songYear" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
             <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" text="Add a New Song" />

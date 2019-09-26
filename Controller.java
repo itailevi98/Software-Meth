@@ -2,12 +2,13 @@ package SongLib;
 
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
-import javafx.scene.control.ListView;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.event.*;
+import javafx.scene.control.*;
 import javafx.beans.value.ChangeListener;
+import java.util.Optional;
+
 
 public class Controller {
 
@@ -16,8 +17,15 @@ public class Controller {
     
     private ObservableList<String> obsList;
     
+    public Label songName = new Label();
+    public Label artistName = new Label();
+    public Label albumName = new Label();
+    public Label songYear = new Label();
+    public Button editButton = new Button();
+   
   
-    public void initialize() {
+    public void initialize(Stage primaryStage) {
+    	
 
     	obsList=FXCollections.observableArrayList(
     			"Dead Presidents", 
@@ -28,17 +36,37 @@ public class Controller {
     	);
     	listView.setItems(obsList);
     	
+    	
+    	listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
+    	
     	//select first item by default
     	listView.getSelectionModel().select(0);
     	
     	
-    	//listView.getSelectionModel().selectedIndexProperty().addListener(obsList, oldVal, newVal)->showItem(primaryStage);
-    
+    	TextField newSongName = new TextField();
+    	editButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				String song = "";
+				songName.textProperty().bind(newSongName.textProperty());
+				newSongName.setText(song);
+				
+			}
+    	});
+    	
+    	
+    	
     
     }
     
     private void showItem(Stage primaryStage) {
-    	Alert alert = new Alert(AlertType.INFORMATION);
+    	
+    	String content = listView.getSelectionModel().getSelectedItem();
+    	songName.setText(content);
+    	//listView.getSelectionModel().getSelectedItem();
+    	
+    	
+    	
+    	/*Alert alert = new Alert(AlertType.INFORMATION);
     	alert.initOwner(primaryStage);
     	alert.setTitle("Song Details");
     	alert.setHeaderText("Selected song details: ");
@@ -46,7 +74,36 @@ public class Controller {
     	String content = "Name: " + listView.getSelectionModel().getSelectedItem();
     	
     	alert.setContentText(content);
-    	alert.showAndWait();
+    	alert.showAndWait();*/
+    }
+    
+    public void editSong(ActionEvent event){
+    	//String originalName = listView.getSelectionModel().getSelectedItem();
+    	int index = listView.getSelectionModel().getSelectedIndex();
+    	TextField newSongName = new TextField();
+    	
+    	EventHandler<ActionEvent> edit = new EventHandler<ActionEvent>() {
+    			public void handle(ActionEvent e) {
+    				songName.setText(newSongName.getText());
+    			}
+    	};
+    	
+    	newSongName.setOnAction(edit);
+    	
+    	
+    	/*TextInputDialog dialog = new TextInputDialog(originalName);
+    	dialog.initOwner(Main.primaryStage);
+    	dialog.setTitle("List Item");
+    	dialog.setHeaderText("Selected Item (Index: " + index + ")");
+    	dialog.setContentText("Enter New Song Name: ");
+    	
+    	
+    	Optional<String> newSongName = dialog.showAndWait();
+    	*/
+    	
+    	
+    		obsList.set(index, songName.getText());
+
     }
     
 }	
