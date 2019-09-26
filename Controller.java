@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.beans.value.ChangeListener;
 import java.util.Optional;
 
@@ -22,6 +23,11 @@ public class Controller {
     public Label albumName = new Label();
     public Label songYear = new Label();
     public Button editButton = new Button();
+    public TextField newSongName = new TextField();
+    public TextField newArtistName = new TextField();
+    public TextField newAlbumName = new TextField();
+    public TextField newYearDate = new TextField();
+    public Button saveSong = new Button();
    
   
     public void initialize(Stage primaryStage) {
@@ -43,15 +49,8 @@ public class Controller {
     	listView.getSelectionModel().select(0);
     	
     	
-    	TextField newSongName = new TextField();
-    	editButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				String song = "";
-				songName.textProperty().bind(newSongName.textProperty());
-				newSongName.setText(song);
-				
-			}
-    	});
+    	
+    	editButton.setOnAction(this::editSongDetails);
     	
     	
     	
@@ -62,6 +61,14 @@ public class Controller {
     	
     	String content = listView.getSelectionModel().getSelectedItem();
     	songName.setText(content);
+    	
+    	newSongName.setVisible(false);
+		newAlbumName.setVisible(false);
+		newArtistName.setVisible(false);
+		newYearDate.setVisible(false);
+		
+		saveSong.setVisible(false);
+    	
     	//listView.getSelectionModel().getSelectedItem();
     	
     	
@@ -77,33 +84,63 @@ public class Controller {
     	alert.showAndWait();*/
     }
     
-    public void editSong(ActionEvent event){
-    	//String originalName = listView.getSelectionModel().getSelectedItem();
+    public void editSongDetails(ActionEvent event){
     	int index = listView.getSelectionModel().getSelectedIndex();
-    	TextField newSongName = new TextField();
+    	newSongName.setVisible(true);
+    	newSongName.setText(songName.getText());
     	
-    	EventHandler<ActionEvent> edit = new EventHandler<ActionEvent>() {
-    			public void handle(ActionEvent e) {
-    				songName.setText(newSongName.getText());
+    	newArtistName.setVisible(true);
+    	newArtistName.setText(artistName.getText());
+    	
+    	newAlbumName.setVisible(true);
+    	newAlbumName.setText(albumName.getText());
+    	
+    	newYearDate.setVisible(true);
+    	newYearDate.setText(songYear.getText());
+    	
+    	
+    	saveSong.setVisible(true);
+    	
+    	
+    	
+    	saveSong.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
+    				Alert alert = new Alert(AlertType.INFORMATION);
+    				alert.initOwner(Main.primaryStage);
+    				alert.setTitle("Empty Song/Artist");
+    				alert.setHeaderText("You cannot leave a song or artist name empty. Please input a name for the song/artist.");
+    				alert.showAndWait();
+    				editSongDetails(event);
+    				return;
     			}
-    	};
+    			songName.setText(newSongName.getText());
+    			artistName.setText(newArtistName.getText());
+    			albumName.setText(newAlbumName.getText());
+    			songYear.setText(newYearDate.getText());
+    			
+    			
+    			obsList.set(index, songName.getText());
+    			
+    			
+    			newSongName.setVisible(false);
+    			newAlbumName.setVisible(false);
+    			newArtistName.setVisible(false);
+    			newYearDate.setVisible(false);
+    			
+    			
+    			
+    			saveSong.setVisible(false);
+    			
+    		}
+    	});
     	
-    	newSongName.setOnAction(edit);
     	
     	
-    	/*TextInputDialog dialog = new TextInputDialog(originalName);
-    	dialog.initOwner(Main.primaryStage);
-    	dialog.setTitle("List Item");
-    	dialog.setHeaderText("Selected Item (Index: " + index + ")");
-    	dialog.setContentText("Enter New Song Name: ");
     	
-    	
-    	Optional<String> newSongName = dialog.showAndWait();
-    	*/
-    	
-    	
-    		obsList.set(index, songName.getText());
 
     }
+    
+   
     
 }	
