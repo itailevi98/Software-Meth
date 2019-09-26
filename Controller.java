@@ -1,5 +1,9 @@
 package SongLib;
 
+import java.io.File;
+import java.io.FileReader;
+import java.util.Iterator;
+
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +13,9 @@ import javafx.scene.control.*;
 import javafx.beans.value.ChangeListener;
 import java.util.Optional;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*; 
 
 public class Controller {
 
@@ -24,9 +31,27 @@ public class Controller {
     public Button editButton = new Button();
    
   
-    public void initialize(Stage primaryStage) {
+    public void initialize(Stage primaryStage) throws Exception{
     	
+    	//get object from document
+        Object obj = new JSONParser().parse(new FileReader("songs.json")); 
+        
+        //cast object as a json object
+        JSONObject document= (JSONObject) obj;
+        
+        //get json array from object.
+        JSONArray songList = (JSONArray) document.get("songList");
+        
+        //iterator goes through the list. 
+        Iterator songIterator=songList.iterator();
+        
+        while(songIterator.hasNext()) {
+        	JSONObject song = (JSONObject) songIterator.next();
+        	System.out.println(song.get("name"));
+        	
+        }
 
+        
     	obsList=FXCollections.observableArrayList(
     			"Dead Presidents", 
     			"Thought you wuz nice", 
