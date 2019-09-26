@@ -1,8 +1,6 @@
 package SongLib;
 
-import java.io.File;
 import java.io.FileReader;
-import java.util.Iterator;
 
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -10,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.beans.value.ChangeListener;
 import java.util.Optional;
 
@@ -30,33 +27,12 @@ public class Controller {
     public Label albumName = new Label();
     public Label songYear = new Label();
     public Button editButton = new Button();
-    public TextField newSongName = new TextField();
-    public TextField newArtistName = new TextField();
-    public TextField newAlbumName = new TextField();
-    public TextField newYearDate = new TextField();
-    public Button saveSong = new Button();
    
   
     public void initialize(Stage primaryStage) throws Exception{
     	
-    	//get object from document
-        Object obj = new JSONParser().parse(new FileReader("songs.json")); 
+        Object obj = new JSONParser().parse(new FileReader("JSONExample.json")); 
         
-        //cast object as a json object
-        JSONObject document= (JSONObject) obj;
-        
-        //get json array from object.
-        JSONArray songList = (JSONArray) document.get("songList");
-        
-        //iterator goes through the list. 
-        Iterator songIterator=songList.iterator();
-        
-        while(songIterator.hasNext()) {
-        	JSONObject song = (JSONObject) songIterator.next();
-        	System.out.println(song.get("name"));
-        	
-        }
-
         
     	obsList=FXCollections.observableArrayList(
     			"Dead Presidents", 
@@ -74,8 +50,15 @@ public class Controller {
     	listView.getSelectionModel().select(0);
     	
     	
-    	
-    	editButton.setOnAction(this::editSongDetails);
+    	TextField newSongName = new TextField();
+    	editButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				String song = "";
+				songName.textProperty().bind(newSongName.textProperty());
+				newSongName.setText(song);
+				
+			}
+    	});
     	
     	
     	
@@ -86,14 +69,6 @@ public class Controller {
     	
     	String content = listView.getSelectionModel().getSelectedItem();
     	songName.setText(content);
-    	
-    	newSongName.setVisible(false);
-		newAlbumName.setVisible(false);
-		newArtistName.setVisible(false);
-		newYearDate.setVisible(false);
-		
-		saveSong.setVisible(false);
-    	
     	//listView.getSelectionModel().getSelectedItem();
     	
     	
@@ -109,63 +84,33 @@ public class Controller {
     	alert.showAndWait();*/
     }
     
-    public void editSongDetails(ActionEvent event){
+    public void editSong(ActionEvent event){
+    	//String originalName = listView.getSelectionModel().getSelectedItem();
     	int index = listView.getSelectionModel().getSelectedIndex();
-    	newSongName.setVisible(true);
-    	newSongName.setText(songName.getText());
+    	TextField newSongName = new TextField();
     	
-    	newArtistName.setVisible(true);
-    	newArtistName.setText(artistName.getText());
-    	
-    	newAlbumName.setVisible(true);
-    	newAlbumName.setText(albumName.getText());
-    	
-    	newYearDate.setVisible(true);
-    	newYearDate.setText(songYear.getText());
-    	
-    	
-    	saveSong.setVisible(true);
-    	
-    	
-    	
-    	saveSong.setOnAction(new EventHandler<ActionEvent>() {
-    		public void handle(ActionEvent e) {
-    			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
-    				Alert alert = new Alert(AlertType.INFORMATION);
-    				alert.initOwner(Main.primaryStage);
-    				alert.setTitle("Empty Song/Artist");
-    				alert.setHeaderText("You cannot leave a song or artist name empty. Please input a name for the song/artist.");
-    				alert.showAndWait();
-    				editSongDetails(event);
-    				return;
+    	EventHandler<ActionEvent> edit = new EventHandler<ActionEvent>() {
+    			public void handle(ActionEvent e) {
+    				songName.setText(newSongName.getText());
     			}
-    			songName.setText(newSongName.getText());
-    			artistName.setText(newArtistName.getText());
-    			albumName.setText(newAlbumName.getText());
-    			songYear.setText(newYearDate.getText());
-    			
-    			
-    			obsList.set(index, songName.getText());
-    			
-    			
-    			newSongName.setVisible(false);
-    			newAlbumName.setVisible(false);
-    			newArtistName.setVisible(false);
-    			newYearDate.setVisible(false);
-    			
-    			
-    			
-    			saveSong.setVisible(false);
-    			
-    		}
-    	});
+    	};
+    	
+    	newSongName.setOnAction(edit);
     	
     	
+    	/*TextInputDialog dialog = new TextInputDialog(originalName);
+    	dialog.initOwner(Main.primaryStage);
+    	dialog.setTitle("List Item");
+    	dialog.setHeaderText("Selected Item (Index: " + index + ")");
+    	dialog.setContentText("Enter New Song Name: ");
     	
     	
+    	Optional<String> newSongName = dialog.showAndWait();
+    	*/
+    	
+    	
+    		obsList.set(index, songName.getText());
 
     }
-    
-   
     
 }	
