@@ -19,7 +19,7 @@
             <Button fx:id="editButton" layoutX="185.0" layoutY="422.0" mnemonicParsing="false" onAction="#editSongDetails" text="Edit Song Details" />
             <Label layoutX="192.0" layoutY="15.0" prefHeight="17.0" prefWidth="137.0" text="Song Details:" />
             <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" text="Add a New Song" />
-            <Button fx:id="deleteSong" layoutX="354.0" layoutY="422.0" mnemonicParsing="false" text="Delete Song" />
+            <Button fx:id="deleteButton" layoutX="354.0" layoutY="422.0" mnemonicParsing="false" text="Delete Song" />
             <Label fx:id="songYear" layoutX="159.0" layoutY="359.0" />
             <Label layoutX="74.0" layoutY="126.0" prefHeight="17.0" prefWidth="74.0" text="Name:" />
             <Label layoutX="74.0" layoutY="204.0" text="Artist:" />
