@@ -3,10 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SongLib.Controller">
    <children>
@@ -16,34 +14,25 @@
             <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="87.0" text="Song List" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="231.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="461.0">
+      <AnchorPane layoutX="225.0" layoutY="3.0" minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="461.0">
          <children>
-            <Button fx:id="editButton" layoutX="185.0" layoutY="422.0" mnemonicParsing="false" onAction="#editSong" text="Edit Song Details" />
+            <Button fx:id="editButton" layoutX="185.0" layoutY="422.0" mnemonicParsing="false" onAction="#editSongDetails" text="Edit Song Details" />
             <Label layoutX="159.0" layoutY="14.0" prefHeight="17.0" prefWidth="137.0" text="Song Details:" />
-            <GridPane layoutX="27.0" layoutY="67.0" prefHeight="320.0" prefWidth="421.0" AnchorPane.leftAnchor="27.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="70.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="351.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="80.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Label prefHeight="17.0" prefWidth="74.0" text="Name:" />
-                  <Label text="Artist:" GridPane.rowIndex="1" />
-                  <Label text="Album:" GridPane.rowIndex="2" />
-                  <Label text="Year:" GridPane.rowIndex="3" />
-                  <Label fx:id="songName" text="-Empty-" GridPane.columnIndex="1" />
-                  <Label fx:id="artistName" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="albumName" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="songYear" text="-Empty-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               </children>
-            </GridPane>
             <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" text="Add a New Song" />
             <Button layoutX="354.0" layoutY="422.0" mnemonicParsing="false" text="Delete Song" />
+            <Label fx:id="songYear" layoutX="159.0" layoutY="359.0" />
+            <Label layoutX="74.0" layoutY="126.0" prefHeight="17.0" prefWidth="74.0" text="Name:" />
+            <Label layoutX="74.0" layoutY="204.0" text="Artist:" />
+            <Label layoutX="72.0" layoutY="274.0" text="Album:" />
+            <Label layoutX="77.0" layoutY="350.0" text="Year:" />
+            <Label fx:id="songName" layoutX="159.0" layoutY="126.0" />
+            <Label fx:id="artistName" layoutX="159.0" layoutY="205.0" />
+            <Label fx:id="albumName" layoutX="159.0" layoutY="283.0" />
+            <TextField fx:id="newSongName" layoutX="163.0" layoutY="156.0" text="Enter New Song Name:" visible="false" />
+            <Button fx:id="saveSong" layoutX="223.0" layoutY="457.0" mnemonicParsing="false" text="Save" visible="false" />
+            <TextField fx:id="newArtistName" layoutX="164.0" layoutY="236.0" text="Enter New Artist Name:" visible="false" />
+            <TextField fx:id="newAlbumName" layoutX="163.0" layoutY="308.0" text="Enter New Album Name:" visible="false" />
+            <TextField fx:id="newYearDate" layoutX="164.0" layoutY="381.0" text="Enter New Year Date:" visible="false" />
          </children>
       </AnchorPane>
    </children>
