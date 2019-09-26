@@ -1,15 +1,25 @@
 package SongLib;
 
+import java.io.FileReader;
+//import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.scene.control.*;
+
 import javafx.scene.control.Alert.AlertType;
 //import javafx.beans.value.ChangeListener;
-import java.util.Optional;
+//import java.util.Optional;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*; 
 
 public class Controller {
 
@@ -32,16 +42,35 @@ public class Controller {
     public Button cancelButton = new Button();
    
   
-    public void initialize(Stage primaryStage) {
+    Object obj;
+    JSONArray songList;
+    JSONObject selectedSong =new JSONObject();
+    
+    public void initialize(Stage primaryStage) throws Exception{
     	
 
-    	obsList=FXCollections.observableArrayList(
-    			"Dead Presidents", 
-    			"Thought you wuz nice", 
-    			"Blackout", 
-    			"Dancing in the Rain",
-    			"Thieves in the Night"
-    	);
+    	//get object from document
+        obj = new JSONParser().parse(new FileReader("songs.json")); 
+        
+        //cast object as a json object
+        JSONObject document= (JSONObject) obj;
+        
+        //get json array from object.
+        songList = (JSONArray) document.get("songList");
+        
+        //iterator goes through the list. 
+        Iterator songIterator=songList.iterator();
+        
+        ArrayList<String> songArrList = new ArrayList<String>();
+        
+        while(songIterator.hasNext()) {
+        	JSONObject song = (JSONObject) songIterator.next();
+        	songArrList.add((String) song.get("name"));
+        }
+
+        
+    	obsList=FXCollections.observableArrayList(songArrList);
+
     	listView.setItems(obsList);
     	
     	
@@ -49,7 +78,6 @@ public class Controller {
     	
     	//select first item by default
     	listView.getSelectionModel().select(0);
-    	
     	
     	
     	editButton.setOnAction(this::editSongDetails);
@@ -64,17 +92,34 @@ public class Controller {
     private void showItem(Stage primaryStage) {
     	
     	String content = listView.getSelectionModel().getSelectedItem();
-    	songName.setText(content);
     	
+    	//iterate through JSON Array to find the song. Then set selected Song to the object.
+    	
+    	
+    	for(Object songObject : songList) {
+    		JSONObject song= (JSONObject) songObject;
+    		if(song.get("name").equals(content)) {
+    			selectedSong=song;
+    		}
+    	}
+    	
+    	
+    	
+    	songName.setText(content);
+    	artistName.setText((String)selectedSong.get("artist"));
+    	albumName.setText((String)selectedSong.get("album"));
+    	songYear.setText((String)selectedSong.get("year"));
+
     	newSongName.setVisible(false);
 		newAlbumName.setVisible(false);
 		newArtistName.setVisible(false);
 		newYearDate.setVisible(false);
 		
 		saveSong.setVisible(false);
-    	
 
     }
+    
+
     
     public void editSongDetails(ActionEvent event){
     	int index = listView.getSelectionModel().getSelectedIndex();
@@ -96,8 +141,10 @@ public class Controller {
     	
     	
     	
-    	saveSong.setOnAction(new EventHandler<ActionEvent>() {
-    		public void handle(ActionEvent e) {
+    	saveSong.setOnAction(new EventHandler<ActionEvent>(){
+    		@SuppressWarnings("unchecked")
+    		
+			public void handle(ActionEvent e) {
     			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
     				Alert alert = new Alert(AlertType.INFORMATION);
     				alert.initOwner(Main.primaryStage);
@@ -108,6 +155,7 @@ public class Controller {
     				return;
     			}
     			
+
     			Alert confirmation = new Alert(AlertType.CONFIRMATION);
     			confirmation.initOwner(Main.primaryStage);
     			confirmation.setTitle("Confirm?");
@@ -135,11 +183,18 @@ public class Controller {
     			
     			
     			
+
+    			
+
     			songName.setText(newSongName.getText());
     			artistName.setText(newArtistName.getText());
     			albumName.setText(newAlbumName.getText());
     			songYear.setText(newYearDate.getText());
     			
+    			selectedSong.put("name",newSongName.getText());
+    			selectedSong.put("artist",newArtistName.getText());
+    			selectedSong.put("album",newAlbumName.getText());
+    			selectedSong.put("year",newYearDate.getText());
     			
     			obsList.set(index, songName.getText());
     			
@@ -155,7 +210,6 @@ public class Controller {
     			cancelButton.setVisible(false);
     			
     		}
-    		
     		
     	});
     	
@@ -207,6 +261,11 @@ public class Controller {
         		listView.getItems().remove(index);
         		showItem(Main.primaryStage);
         		
+        	}
+        	else {
+        		listView.getSelectionModel().selectNext();
+        		listView.getItems().remove(index);
+        		showItem(Main.primaryStage);
         	}
         	
         	
