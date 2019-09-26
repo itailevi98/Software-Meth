@@ -1,7 +1,6 @@
 package SongLib;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class Controller {
     public Button cancelButton = new Button();
    
   
-    Object obj;
+    public static Object obj;
     JSONArray songList;
     JSONObject selectedSong =new JSONObject();
     

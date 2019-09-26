@@ -1,0 +1,43 @@
+{
+  "songList": [
+  
+  	{
+  	  "name": "ABC Song",
+  	  "artist": "unknown",
+  	  "album": "",
+  	  "year": "1000"
+  	
+  	},
+  	{
+  	  "name": "Dark Red",
+  	  "artist": "Steve Lacy",
+  	  "album": "",
+  	  "year": ""
+  	
+  	},
+    {
+      "name": "Dead Presidents",
+      "artist": "gangsta pat",
+      "album": "Homicidal Lifestyle",
+      "year": "1997"
+    },
+    {
+      "name": "E.Coli",
+      "artist": "The Alchemist",
+      "album": "Bread",
+      "year": "2018"
+    },
+    {
+      "name": "Flamingo",
+      "artist": "Kero Kero Bonito",
+      "album": "",
+      "year": ""
+    }
+    {
+      "name": "Thought u wuz nice",
+      "artist": "Phife Dawg",
+      "album": "Bend Ova/ Thought U Wuz Nice",
+      "year": "1999"
+    }
+  ]
+}
