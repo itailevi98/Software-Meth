@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.beans.value.ChangeListener;
-import java.util.Optional;
+//import javafx.beans.value.ChangeListener;
+//import java.util.Optional;
 
 
 public class Controller {
@@ -28,6 +28,8 @@ public class Controller {
     public TextField newAlbumName = new TextField();
     public TextField newYearDate = new TextField();
     public Button saveSong = new Button();
+    public Button deleteSong = new Button();
+    public Button cancelButton = new Button();
    
   
     public void initialize(Stage primaryStage) {
@@ -100,6 +102,7 @@ public class Controller {
     	
     	
     	saveSong.setVisible(true);
+    	cancelButton.setVisible(true);
     	
     	
     	
@@ -131,7 +134,23 @@ public class Controller {
     			
     			
     			saveSong.setVisible(false);
+    			cancelButton.setVisible(false);
     			
+    		}
+    		
+    		
+    	});
+    	
+    	
+    	cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			newSongName.setVisible(false);
+    			newArtistName.setVisible(false);
+    			newAlbumName.setVisible(false);
+    			newYearDate.setVisible(false);
+    			
+    			saveSong.setVisible(false);
+    			cancelButton.setVisible(false);
     		}
     	});
     	
@@ -139,6 +158,13 @@ public class Controller {
     	
     	
 
+    }
+    
+    
+    public void deleteSong(ActionEvent event) {
+    	
+    	
+    	
     }
     
    
