@@ -5,13 +5,19 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SongLib.Controller">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="208.0">
          <children>
             <ListView fx:id="listView" layoutY="41.0" prefHeight="442.0" prefWidth="209.0" />
-            <Label layoutX="73.0" layoutY="14.0" prefHeight="17.0" prefWidth="87.0" text="Song List" />
+            <Label layoutX="71.0" layoutY="2.0" prefHeight="24.0" prefWidth="65.0" text="Song List" />
+            <Label layoutX="68.0" layoutY="27.0" text="(Artist - Name)">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="225.0" layoutY="3.0" minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="461.0">

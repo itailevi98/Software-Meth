@@ -65,7 +65,7 @@ public class Controller {
         
         while(songIterator.hasNext()) {
         	JSONObject song = (JSONObject) songIterator.next();
-        	songArrList.add((String) song.get("name"));
+        	songArrList.add((String) song.get("artist") + " - " + song.get("name"));
         }
 
         
@@ -74,10 +74,12 @@ public class Controller {
     	listView.setItems(obsList);
     	
     	
-    	listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
-    	
-    	//select first item by default
-    	listView.getSelectionModel().select(0);
+    	if(listView.getItems().size() >= 1) {
+    		
+    		listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
+    		listView.getSelectionModel().select(0);
+	    	
+    	}
     	
     	
     	editButton.setOnAction(this::editSongDetails);
@@ -91,11 +93,12 @@ public class Controller {
     
     private void showItem(Stage primaryStage) {
     	
-    	String content = listView.getSelectionModel().getSelectedItem();
+    	if(listView.getItems().size() == 0) return;
+    	int songNameIndex = listView.getSelectionModel().getSelectedItem().indexOf('-');
+    	
+    	String content = listView.getSelectionModel().getSelectedItem().substring(songNameIndex + 2);
     	
     	//iterate through JSON Array to find the song. Then set selected Song to the object.
-    	
-    	
     	for(Object songObject : songList) {
     		JSONObject song= (JSONObject) songObject;
     		if(song.get("name").equals(content)) {
@@ -122,6 +125,16 @@ public class Controller {
 
     
     public void editSongDetails(ActionEvent event){
+    	if(listView.getItems().size() == 0) {
+    		Alert noSongAlert = new Alert(AlertType.INFORMATION);
+    		noSongAlert.initOwner(Main.primaryStage);
+    		noSongAlert.setTitle("Unable to Perform Function");
+    		noSongAlert.setHeaderText("There are no songs selected to edit.");
+    		noSongAlert.showAndWait();
+    		return;
+    	}
+    	
+    	
     	int index = listView.getSelectionModel().getSelectedIndex();
     	newSongName.setVisible(true);
     	newSongName.setText(songName.getText());
@@ -234,6 +247,15 @@ public class Controller {
     
     
     public void deleteSong(ActionEvent event) {
+    	if(listView.getItems().size() == 0) {
+    		Alert noSongAlert = new Alert(AlertType.INFORMATION);
+    		noSongAlert.initOwner(Main.primaryStage);
+    		noSongAlert.setTitle("Unable to Perform Function");
+    		noSongAlert.setHeaderText("There are no songs selected to delete.");
+    		noSongAlert.showAndWait();
+    		return;
+    	}
+    	
     	Alert confirmation = new Alert(AlertType.CONFIRMATION);
     	confirmation.initOwner(Main.primaryStage);
     	confirmation.setTitle("Delete Song?");
@@ -246,36 +268,46 @@ public class Controller {
     	
     	Optional<ButtonType> result = confirmation.showAndWait();
     	if(result.get() == noDelete) return;
-    	else {
+    	
     		
-        	int index = listView.getSelectionModel().getSelectedIndex();
-        	if(index == 0) {
+    	int index = listView.getSelectionModel().getSelectedIndex();
+    	if(index == 0) {
+    		if(listView.getItems().size() != 1) {
+    		
         		listView.getItems().remove(index);
         		listView.getSelectionModel().select(0);
         		showItem(Main.primaryStage);
-        	}
-        	
-        	
-        	else if(index == listView.getItems().size() - 1) {
-        		listView.getSelectionModel().selectPrevious();
-        		listView.getItems().remove(index);
-        		showItem(Main.primaryStage);
-        		
-        	}
-        	else {
-        		listView.getSelectionModel().selectNext();
-        		listView.getItems().remove(index);
-        		showItem(Main.primaryStage);
-        	}
-        	
-        	
-        	songList.remove(index);
-        	
-        	
-        	
     		
+    		}
+    		else {
+    			
+    			listView.getItems().clear();
+    		}
+    	}
+    	
+    	
+    	else if(index == listView.getItems().size() - 1) {
+    		listView.getSelectionModel().selectPrevious();
+    		listView.getItems().remove(index);
+    		showItem(Main.primaryStage);
     		
     	}
+    	else {
+    		listView.getSelectionModel().selectNext();
+    		listView.getItems().remove(index);
+    		showItem(Main.primaryStage);
+    	}
+    	
+    	
+    	
+    	
+    	songList.remove(index);
+        	
+        	
+        	
+    		
+    		
+    	
     	
     	
     	
