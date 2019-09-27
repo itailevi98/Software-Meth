@@ -24,7 +24,7 @@
          <children>
             <Button fx:id="editButton" layoutX="185.0" layoutY="422.0" mnemonicParsing="false" onAction="#editSongDetails" text="Edit Song Details" />
             <Label layoutX="192.0" layoutY="15.0" prefHeight="17.0" prefWidth="137.0" text="Song Details:" />
-            <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" text="Add a New Song" />
+            <Button fx:id="addButton" layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#addSong" text="Add a New Song" />
             <Button fx:id="deleteButton" layoutX="354.0" layoutY="422.0" mnemonicParsing="false" text="Delete Song" />
             <Label fx:id="songYear" layoutX="159.0" layoutY="359.0" />
             <Label layoutX="74.0" layoutY="126.0" prefHeight="17.0" prefWidth="74.0" text="Name:" />
@@ -34,12 +34,13 @@
             <Label fx:id="songName" layoutX="159.0" layoutY="126.0" />
             <Label fx:id="artistName" layoutX="159.0" layoutY="205.0" />
             <Label fx:id="albumName" layoutX="159.0" layoutY="283.0" />
-            <TextField fx:id="newSongName" layoutX="163.0" layoutY="156.0" text="Enter New Song Name:" visible="false" />
+            <TextField fx:id="newSongName" layoutX="163.0" layoutY="156.0" visible="false" />
             <Button fx:id="saveSong" layoutX="98.0" layoutY="62.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="105.0" text="Save" visible="false" />
-            <TextField fx:id="newArtistName" layoutX="164.0" layoutY="236.0" text="Enter New Artist Name:" visible="false" />
-            <TextField fx:id="newAlbumName" layoutX="163.0" layoutY="308.0" text="Enter New Album Name:" visible="false" />
-            <TextField fx:id="newYearDate" layoutX="164.0" layoutY="381.0" text="Enter New Year Date:" visible="false" />
+            <TextField fx:id="newArtistName" layoutX="164.0" layoutY="236.0" visible="false" />
+            <TextField fx:id="newAlbumName" layoutX="163.0" layoutY="308.0" visible="false" />
+            <TextField fx:id="newYearDate" layoutX="164.0" layoutY="381.0" visible="false" />
             <Button fx:id="cancelButton" layoutX="279.0" layoutY="62.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="105.0" text="Cancel" visible="false" />
+            <Button fx:id="saveNewSong" layoutX="30.0" layoutY="453.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Save" visible="false" />
          </children>
       </AnchorPane>
    </children>

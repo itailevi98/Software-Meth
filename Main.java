@@ -34,7 +34,7 @@ public class Main extends Application {
         primaryStage.show();
        
         
-        primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, arg0 -> {
+        	primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, arg0 -> {
 			try {
 				closeWindowEvent(arg0);
 			} catch (Exception e) {
@@ -54,11 +54,6 @@ public class Main extends Application {
         FileWriter file = new FileWriter("songs.json");
         file.write(obj.toJSONString());
         file.flush();
-
-    	
-    	
-        //System.out.println("Window close request ...");
-        
 
     }
 

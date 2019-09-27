@@ -2,6 +2,7 @@ package SongLib;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -40,7 +41,8 @@ public class Controller {
     public Button deleteButton = new Button();
     public Button cancelButton = new Button();
     public Button addButton = new Button();
-   
+    public Button saveNewSong = new Button();
+    
   
     public static Object obj;
     JSONArray songList;
@@ -67,6 +69,8 @@ public class Controller {
         	JSONObject song = (JSONObject) songIterator.next();
         	songArrList.add((String) song.get("artist") + " - " + song.get("name"));
         }
+        
+        Collections.sort(songArrList);
 
         
     	obsList=FXCollections.observableArrayList(songArrList);
@@ -85,12 +89,13 @@ public class Controller {
     	editButton.setOnAction(this::editSongDetails);
     	deleteButton.setOnAction(this::deleteSong);
     	
-    	
+    	addButton.setOnAction(this::addSong);
     	
     	
     
     }
     
+
     private void showItem(Stage primaryStage) {
     	
     	if(listView.getItems().size() == 0) return;
@@ -122,7 +127,105 @@ public class Controller {
 
     }
     
+    
+    public void addSong(ActionEvent event) {
 
+    	newSongName.setVisible(true);
+    	newArtistName.setVisible(true);
+    	newAlbumName.setVisible(true);
+    	newYearDate.setVisible(true);
+    	saveNewSong.setVisible(true);
+    	
+    	saveNewSong.setOnAction(new EventHandler<ActionEvent>(){
+    		
+			@SuppressWarnings("unchecked")
+			public void handle(ActionEvent e) {
+    			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
+    				Alert alert = new Alert(AlertType.INFORMATION);
+    				alert.initOwner(Main.primaryStage);
+    				alert.setTitle("Empty Song/Artist");
+    				alert.setHeaderText("You cannot leave a song or artist name empty. Please input a name for the song/artist.");
+    				alert.showAndWait();
+    				addSong(event);
+    				return;
+    			}
+    			
+    	        Iterator songIterator=songList.iterator();
+    	        
+    	        
+    	        while(songIterator.hasNext()) {
+    	        	JSONObject song = (JSONObject) songIterator.next();
+    	        	if(song.get("name").equals(newSongName.getText())) {
+    	        		if(song.get("artist").equals(newArtistName.getText())) {
+    	    				Alert alert = new Alert(AlertType.INFORMATION);
+    	    				alert.initOwner(Main.primaryStage);
+    	    				alert.setTitle("Duplicate Song");
+    	    				alert.setHeaderText("You cannot add a duplicate song. Please try again");
+    	    				alert.showAndWait();
+    	    				addSong(event);
+    	    				return;
+    	        		}
+    	        	}
+    	        }
+    	        
+    	        
+    			Alert confirmation = new Alert(AlertType.CONFIRMATION);
+    			confirmation.initOwner(Main.primaryStage);
+    			confirmation.setTitle("Confirm?");
+    			confirmation.setHeaderText("Are you sure you want to add this song");
+    			
+    			ButtonType confirmEditSong = new ButtonType("Save Song");
+    			ButtonType confirmCancelEdit = new ButtonType("Cancel");
+    			confirmation.getButtonTypes().setAll(confirmEditSong, confirmCancelEdit);
+    			
+    			Optional<ButtonType> result = confirmation.showAndWait();
+    			
+    			if(result.get() == confirmCancelEdit) {
+    				newSongName.setVisible(false);
+        			newArtistName.setVisible(false);
+        			newAlbumName.setVisible(false);
+        			newYearDate.setVisible(false);
+        			saveSong.setVisible(false);
+        			cancelButton.setVisible(false);
+        			return;
+    				
+    			}
+    			
+
+    			
+    			obsList.add(newSongName.getText());
+    			
+    			JSONObject newSong= new JSONObject();
+    			
+    			newSong.put("name",newSongName.getText());
+    			newSong.put("artist",newArtistName.getText());
+    			newSong.put("album",newAlbumName.getText());
+    			newSong.put("year",newYearDate.getText());
+    			
+    			songList.add(newSong);
+    			
+    			Collections.sort(obsList);
+    			
+    			int index=obsList.indexOf(newSongName.getText());
+    	    	listView.getSelectionModel().select(index);
+    	    	
+    			
+    			newSongName.setVisible(false);
+    			newAlbumName.setVisible(false);
+    			newArtistName.setVisible(false);
+    			newYearDate.setVisible(false);
+    			
+    			
+    			
+    			saveNewSong.setVisible(false);
+    			cancelButton.setVisible(false);
+    			
+    		}
+    	});
+
+    	
+    	
+    }
     
     public void editSongDetails(ActionEvent event){
     	if(listView.getItems().size() == 0) {
@@ -193,12 +296,6 @@ public class Controller {
     			}
 
     			
-    			
-    			
-    			
-
-    			
-
     			songName.setText(newSongName.getText());
     			artistName.setText(newArtistName.getText());
     			albumName.setText(newAlbumName.getText());
@@ -223,7 +320,6 @@ public class Controller {
     			cancelButton.setVisible(false);
     			
     		}
-    		
     	});
     	
     	
