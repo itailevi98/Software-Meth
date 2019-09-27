@@ -13,7 +13,7 @@
          <children>
             <ListView fx:id="listView" layoutY="41.0" prefHeight="442.0" prefWidth="209.0" />
             <Label layoutX="71.0" layoutY="2.0" prefHeight="24.0" prefWidth="65.0" text="Song List" />
-            <Label layoutX="68.0" layoutY="27.0" text="(Artist - Name)">
+            <Label layoutX="68.0" layoutY="27.0" text="(Name - Artist)">
                <font>
                   <Font size="10.0" />
                </font>
@@ -26,14 +26,14 @@
             <Label layoutX="192.0" layoutY="15.0" prefHeight="17.0" prefWidth="137.0" text="Song Details:" />
             <Button fx:id="addButton" layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#addSong" text="Add a New Song" />
             <Button fx:id="deleteButton" layoutX="354.0" layoutY="422.0" mnemonicParsing="false" text="Delete Song" />
-            <Label fx:id="songYear" layoutX="159.0" layoutY="359.0" />
+            <Label fx:id="songYear" layoutX="158.0" layoutY="350.0" prefHeight="17.0" prefWidth="50.0" />
             <Label layoutX="74.0" layoutY="126.0" prefHeight="17.0" prefWidth="74.0" text="Name:" />
             <Label layoutX="74.0" layoutY="204.0" text="Artist:" />
             <Label layoutX="72.0" layoutY="274.0" text="Album:" />
             <Label layoutX="77.0" layoutY="350.0" text="Year:" />
             <Label fx:id="songName" layoutX="159.0" layoutY="126.0" />
             <Label fx:id="artistName" layoutX="159.0" layoutY="205.0" />
-            <Label fx:id="albumName" layoutX="159.0" layoutY="283.0" />
+            <Label fx:id="albumName" layoutX="160.0" layoutY="274.0" prefHeight="17.0" prefWidth="243.0" />
             <TextField fx:id="newSongName" layoutX="163.0" layoutY="156.0" visible="false" />
             <Button fx:id="saveSong" layoutX="98.0" layoutY="62.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="105.0" text="Save" visible="false" />
             <TextField fx:id="newArtistName" layoutX="164.0" layoutY="236.0" visible="false" />

@@ -1,3 +1,4 @@
+//Itamar Levi, Young Choi
 package SongLib;
 
 import java.io.FileReader;
@@ -41,7 +42,7 @@ public class Controller {
     public Button deleteButton = new Button();
     public Button cancelButton = new Button();
     public Button addButton = new Button();
-    public Button saveNewSong = new Button();
+    //public Button saveNewSong = new Button();
     
   
     public static Object obj;
@@ -67,10 +68,10 @@ public class Controller {
         
         while(songIterator.hasNext()) {
         	JSONObject song = (JSONObject) songIterator.next();
-        	songArrList.add((String) song.get("artist") + " - " + song.get("name"));
+        	songArrList.add((String) song.get("name") + " - " + song.get("artist"));
         }
         
-        Collections.sort(songArrList);
+        //Collections.sort(songArrList);
 
         
     	obsList=FXCollections.observableArrayList(songArrList);
@@ -97,23 +98,28 @@ public class Controller {
     
 
     private void showItem(Stage primaryStage) {
-    	
+    	cancelButton.setVisible(false);
+    	songName.setVisible(true);
+    	artistName.setVisible(true);
+    	albumName.setVisible(true);
+    	songYear.setVisible(true);
     	if(listView.getItems().size() == 0) return;
-    	int songNameIndex = listView.getSelectionModel().getSelectedItem().indexOf('-');
     	
-    	String content = listView.getSelectionModel().getSelectedItem().substring(songNameIndex + 2);
+    	String content[] = listView.getSelectionModel().getSelectedItem().split(" - ");
+    	System.out.println("Artist: " + content[1]);
+    	System.out.println("Name: " + content[0]);
     	
     	//iterate through JSON Array to find the song. Then set selected Song to the object.
     	for(Object songObject : songList) {
     		JSONObject song= (JSONObject) songObject;
-    		if(song.get("name").equals(content)) {
+    		if(song.get("name").equals(content[0])) {
     			selectedSong=song;
     		}
     	}
     	
     	
     	
-    	songName.setText(content);
+    	songName.setText((String)selectedSong.get("name"));
     	artistName.setText((String)selectedSong.get("artist"));
     	albumName.setText((String)selectedSong.get("album"));
     	songYear.setText((String)selectedSong.get("year"));
@@ -128,15 +134,33 @@ public class Controller {
     }
     
     
+    
+    
     public void addSong(ActionEvent event) {
 
+    	songName.setVisible(false);
+    	artistName.setVisible(false);
+    	albumName.setVisible(false);
+    	songYear.setVisible(false);
+    	
+    	newSongName.clear();
+    	newArtistName.clear();
+    	newAlbumName.clear();
+    	newYearDate.clear();
+    	
+    	
     	newSongName.setVisible(true);
     	newArtistName.setVisible(true);
     	newAlbumName.setVisible(true);
     	newYearDate.setVisible(true);
-    	saveNewSong.setVisible(true);
     	
-    	saveNewSong.setOnAction(new EventHandler<ActionEvent>(){
+    	
+    	saveSong.setVisible(true);
+    	cancelButton.setVisible(true);
+    	
+    	
+    	
+    	saveSong.setOnAction(new EventHandler<ActionEvent>(){
     		
 			@SuppressWarnings("unchecked")
 			public void handle(ActionEvent e) {
@@ -181,6 +205,13 @@ public class Controller {
     			Optional<ButtonType> result = confirmation.showAndWait();
     			
     			if(result.get() == confirmCancelEdit) {
+    				
+    				songName.setVisible(true);
+    				artistName.setVisible(true);
+    				albumName.setVisible(true);
+    				songYear.setVisible(true);
+
+    				
     				newSongName.setVisible(false);
         			newArtistName.setVisible(false);
         			newAlbumName.setVisible(false);
@@ -193,7 +224,7 @@ public class Controller {
     			
 
     			
-    			obsList.add(newSongName.getText());
+    			obsList.add(newSongName.getText() + " - " + newArtistName.getText());
     			
     			JSONObject newSong= new JSONObject();
     			
@@ -204,9 +235,9 @@ public class Controller {
     			
     			songList.add(newSong);
     			
-    			Collections.sort(obsList);
+    			//Collections.sort(obsList);
     			
-    			int index=obsList.indexOf(newSongName.getText());
+    			int index=obsList.indexOf(newSongName.getText() + " - " + newArtistName.getText());
     	    	listView.getSelectionModel().select(index);
     	    	
     			
@@ -215,17 +246,49 @@ public class Controller {
     			newArtistName.setVisible(false);
     			newYearDate.setVisible(false);
     			
+    			songName.setVisible(true);
+				artistName.setVisible(true);
+				albumName.setVisible(true);
+				songYear.setVisible(true);
+				
+				newSongName.clear();
+		    	newArtistName.clear();
+		    	newAlbumName.clear();
+		    	newYearDate.clear();
     			
     			
-    			saveNewSong.setVisible(false);
+    			
+    			saveSong.setVisible(false);
     			cancelButton.setVisible(false);
     			
     		}
     	});
+    	
+    	cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			newSongName.setVisible(false);
+    			newArtistName.setVisible(false);
+    			newAlbumName.setVisible(false);
+    			newYearDate.setVisible(false);
+    			
+    			songName.setVisible(true);
+				artistName.setVisible(true);
+				albumName.setVisible(true);
+				songYear.setVisible(true);
+    			
+    			saveSong.setVisible(false);
+    			cancelButton.setVisible(false);
+    		}
+    	});
+    	
+    	
 
     	
     	
     }
+    
+    
+    
     
     public void editSongDetails(ActionEvent event){
     	if(listView.getItems().size() == 0) {
@@ -306,7 +369,7 @@ public class Controller {
     			selectedSong.put("album",newAlbumName.getText());
     			selectedSong.put("year",newYearDate.getText());
     			
-    			obsList.set(index, songName.getText());
+    			obsList.set(index, songName.getText() + " - " + artistName.getText());
     			
     			
     			newSongName.setVisible(false);
@@ -335,6 +398,11 @@ public class Controller {
     		}
     	});
     	
+    	newSongName.clear();
+    	newArtistName.clear();
+    	newAlbumName.clear();
+    	newYearDate.clear();
+    	
     	
     	
     	
@@ -342,7 +410,9 @@ public class Controller {
     }
     
     
-    public void deleteSong(ActionEvent event) {
+    
+    
+	public void deleteSong(ActionEvent event) {
     	if(listView.getItems().size() == 0) {
     		Alert noSongAlert = new Alert(AlertType.INFORMATION);
     		noSongAlert.initOwner(Main.primaryStage);
@@ -369,35 +439,45 @@ public class Controller {
     	int index = listView.getSelectionModel().getSelectedIndex();
     	if(index == 0) {
     		if(listView.getItems().size() != 1) {
-    		
+    			listView.getSelectionModel().selectNext();
+        		songList.remove(index);
         		listView.getItems().remove(index);
-        		listView.getSelectionModel().select(0);
-        		showItem(Main.primaryStage);
+        		
     		
     		}
     		else {
-    			
+    			songList.clear();
     			listView.getItems().clear();
+    			songName.setText("");
+    			albumName.setText("");
+    			artistName.setText("");
+    			songYear.setText("");
     		}
     	}
     	
     	
     	else if(index == listView.getItems().size() - 1) {
-    		listView.getSelectionModel().selectPrevious();
+    		
+    		
+    		songList.remove(index);
     		listView.getItems().remove(index);
-    		showItem(Main.primaryStage);
+    		listView.getSelectionModel().select(index);
+    		
+    		
     		
     	}
     	else {
-    		listView.getSelectionModel().selectNext();
+    		
+    		songList.remove(index);
     		listView.getItems().remove(index);
-    		showItem(Main.primaryStage);
+    		listView.getSelectionModel().select(index);
+    		
     	}
     	
     	
     	
     	
-    	songList.remove(index);
+    	
         	
         	
         	
