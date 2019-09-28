@@ -2,10 +2,7 @@
 package SongLib;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -45,7 +42,7 @@ public class Controller {
     //public Button saveNewSong = new Button();
     
   
-    public static Object obj;
+    public static JSONObject getSong;
     JSONArray songList;
     JSONObject selectedSong =new JSONObject();
     
@@ -53,32 +50,33 @@ public class Controller {
     	
 
     	//get object from document
-        obj = new JSONParser().parse(new FileReader("songs.json")); 
-        
-        //cast object as a json object
-        JSONObject document= (JSONObject) obj;
+        getSong = (JSONObject) new JSONParser().parse(new FileReader("songs.json")); 
         
         //get json array from object.
-        songList = (JSONArray) document.get("songList");
+        songList = (JSONArray) getSong.get("songList");
         
         //iterator goes through the list. 
         Iterator songIterator=songList.iterator();
         
         ArrayList<String> songArrList = new ArrayList<String>();
         
+        
+        
+        
         while(songIterator.hasNext()) {
         	JSONObject song = (JSONObject) songIterator.next();
         	songArrList.add((String) song.get("name") + " - " + song.get("artist"));
         }
         
-        //Collections.sort(songArrList);
-
+        
+        
+        
         
     	obsList=FXCollections.observableArrayList(songArrList);
 
-    	listView.setItems(obsList);
+    	Collections.sort(obsList);
     	
-    	//listView.getSelectionModel().select(0);
+    	listView.setItems(obsList);
     	
     		
 		listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
@@ -114,6 +112,10 @@ public class Controller {
     	try {
     	content = listView.getSelectionModel().getSelectedItem().split(" - ");
     	}catch(NullPointerException f) {
+    		System.out.println("EXCEPTION: ");
+			for(int i = 0; i < listView.getItems().size(); i++) {
+				System.out.println(listView.getItems().get(i));
+			}
     	}    	
     	System.out.println("Artist: " + content[1]);
     	System.out.println("Name: " + content[0]);
@@ -250,7 +252,10 @@ public class Controller {
     			
     			songList.add(newSong);
     			
-    			//Collections.sort(obsList);
+    			sortJSONArray(songList);
+    			
+    			Collections.sort(obsList);
+    			
     			
     			
 				int index = listView.getItems().indexOf(newSongName.getText() + " - " + newArtistName.getText());
@@ -367,7 +372,11 @@ public class Controller {
     	        while(songIterator.hasNext()) {
     	        	JSONObject song = (JSONObject) songIterator.next();
     	        	if(song.get("name").equals(newSongName.getText()) && song.get("artist").equals(newArtistName.getText())) {
-	    				if(index != songList.indexOf(song)) {
+	    				
+    	        		if(!newAlbumName.getText().equals(albumName.getText()) || !newYearDate.getText().equals(songYear.getText())) {
+	    					
+	    				}
+    	        		else {
 	    	        		Alert alert = new Alert(AlertType.INFORMATION);
 		    				alert.initOwner(Main.primaryStage);
 		    				alert.setTitle("Duplicate Song");
@@ -376,7 +385,8 @@ public class Controller {
 		    				alert.showAndWait();
 		    				editSongDetails(event);
 		    				return;
-	    				}
+	    				
+    	        		}
     	        		
     	        	}
     	        }
@@ -419,17 +429,21 @@ public class Controller {
     			selectedSong.put("album",newAlbumName.getText());
     			selectedSong.put("year",newYearDate.getText());
     			
-    			System.out.println("SIZE: " + obsList.size());
+    			//System.out.println("SIZE: " + obsList.size());
+    			
+    			sortJSONArray(songList);
     			
     			
-    			try {
-    				obsList.set(index, selectedSong.get("name") + " - " + selectedSong.get("artist"));
-    			} catch(NullPointerException f){
+    			
+    			
+    			
+    			obsList.set(index, selectedSong.get("name") + " - " + selectedSong.get("artist"));
+    			
+    			
     				
-    			}
-    				
     			
-    			//Collections.sort(obsList);
+    			
+    			Collections.sort(obsList);
     			
     			int newIndex = listView.getItems().indexOf(songName.getText() + " - " + artistName.getText());
     			listView.getSelectionModel().select(newIndex);
@@ -500,7 +514,8 @@ public class Controller {
     		if(listView.getItems().size() != 1) {
     			listView.getSelectionModel().selectNext();
         		songList.remove(index);
-        		listView.getItems().remove(index);
+        		//listView.getItems().remove(index);
+        		obsList.remove(index);
         		
     		
     		}
@@ -519,7 +534,8 @@ public class Controller {
     		
     		
     		songList.remove(index);
-    		listView.getItems().remove(index);
+    		obsList.remove(index);
+    		//listView.getItems().remove(index);
     		listView.getSelectionModel().select(index);
     		
     		
@@ -528,10 +544,18 @@ public class Controller {
     	else {
     		
     		songList.remove(index);
-    		listView.getItems().remove(index);
+    		obsList.remove(index);
+    		//listView.getItems().remove(index);
     		listView.getSelectionModel().select(index);
     		
     	}
+		//listView.getItems().remove(index);
+		
+		
+		sortJSONArray(songList);
+    	Collections.sort(obsList);
+		
+    	
     	
     	
     	newSongName.setVisible(false);
@@ -547,17 +571,31 @@ public class Controller {
     	saveSong.setVisible(false);
     	
     	
-        	
-        	
-        	
-    		
-    		
-    	
-    	
-    	
-    	
     	
     }
+	
+	
+	
+	
+	public void sortJSONArray(JSONArray songList) {
+		int size = songList.size();
+		Comparator<JSONObject> comparison = new Comparator<JSONObject>() {
+			public int compare(JSONObject song1, JSONObject song2) {
+				String name1 = (String) song1.get("name");
+				String name2 = (String) song2.get("name");
+				
+				int comp = name1.compareTo(name2);
+				return comp;
+				
+			}
+			
+			
+			
+		};
+		
+		Collections.sort(songList, comparison);
+	
+	}
     
    
     

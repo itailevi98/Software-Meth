@@ -50,7 +50,7 @@ public class Main extends Application {
 
     private void closeWindowEvent(WindowEvent event) throws Exception{
     	
-    	JSONObject obj=(JSONObject) Controller.obj;
+    	JSONObject obj=(JSONObject) Controller.getSong;
     	
         FileWriter file = new FileWriter("songs.json");
         file.write(obj.toJSONString());
