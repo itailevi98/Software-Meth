@@ -78,13 +78,13 @@ public class Controller {
 
     	listView.setItems(obsList);
     	
+    	//listView.getSelectionModel().select(0);
     	
-    	if(listView.getItems().size() >= 1) {
     		
-    		listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
-    		listView.getSelectionModel().select(0);
+		listView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> showItem(primaryStage)); 
+		listView.getSelectionModel().select(0);
 	    	
-    	}
+    	
     	
     	
     	editButton.setOnAction(this::editSongDetails);
@@ -103,28 +103,33 @@ public class Controller {
     	artistName.setVisible(true);
     	albumName.setVisible(true);
     	songYear.setVisible(true);
-    	if(listView.getItems().size() == 0) return;
-    	
+    	listView.setItems(obsList);
+    	System.out.println(listView.getItems().size());
+    	if(listView.getItems().size() == 0) { System.out.println("returning"); return; }
+    	//if(listView.getItems().size() == 1) { System.out.println("one song"); listView.getSelectionModel().select(0);}
     	String content[] = new String[2];
-    	if(listView.getItems().size() == 1) 
-    		listView.getSelectionModel().select(0);
+    	
     		
     	
-    	
+    	try {
     	content = listView.getSelectionModel().getSelectedItem().split(" - ");
-    	
-    	
+    	}catch(NullPointerException f) {
+    	}    	
     	System.out.println("Artist: " + content[1]);
     	System.out.println("Name: " + content[0]);
     	
+    	//if(listView.getSelectionModel().getSelectedIndex() == 0) selectedSong = (JSONObject) songList.get(0);
+    	
     	//iterate through JSON Array to find the song. Then set selected Song to the object.
-    	for(Object songObject : songList) {
+    	
+		for(Object songObject : songList) {
+			
     		JSONObject song= (JSONObject) songObject;
+    		//if(songList.size() == 1) selectedSong = song;
     		if(song.get("name").equals(content[0]) && song.get("artist").equals(content[1])) {
     			selectedSong=song;
     		}
-    	}
-    	
+		}
     	
     	
     	songName.setText((String)selectedSong.get("name"));
@@ -138,6 +143,8 @@ public class Controller {
 		newYearDate.setVisible(false);
 		
 		saveSong.setVisible(false);
+		
+		
 
     }
     
@@ -245,8 +252,14 @@ public class Controller {
     			
     			//Collections.sort(obsList);
     			
-    			int index=obsList.indexOf(newSongName.getText() + " - " + newArtistName.getText());
-    	    	listView.getSelectionModel().select(index);
+    			
+				int index = listView.getItems().indexOf(newSongName.getText() + " - " + newArtistName.getText());
+				System.out.println("index: " + index);
+				listView.getSelectionModel().select(index);
+    			if(listView.getItems().size() == 1) {
+    				showItem(Main.primaryStage);
+    			}
+			
     	    	
     			
     			newSongName.setVisible(false);
@@ -353,16 +366,18 @@ public class Controller {
     	        
     	        while(songIterator.hasNext()) {
     	        	JSONObject song = (JSONObject) songIterator.next();
-    	        	if(song.get("name").equals(newSongName.getText())) {
-    	        		if(song.get("artist").equals(newArtistName.getText())) {
-    	    				Alert alert = new Alert(AlertType.INFORMATION);
-    	    				alert.initOwner(Main.primaryStage);
-    	    				alert.setTitle("Duplicate Song");
-    	    				alert.setHeaderText("You cannot edit a song with the same name/artist as another song. Please try again");
-    	    				alert.showAndWait();
-    	    				editSongDetails(event);
-    	    				return;
-    	        		}
+    	        	if(song.get("name").equals(newSongName.getText()) && song.get("artist").equals(newArtistName.getText())) {
+	    				if(index != songList.indexOf(song)) {
+	    	        		Alert alert = new Alert(AlertType.INFORMATION);
+		    				alert.initOwner(Main.primaryStage);
+		    				alert.setTitle("Duplicate Song");
+		    				alert.setHeaderText("You cannot edit a song with the same name/artist as another song. Please try again.");
+		    				alert.setContentText("(If you are editing the same song and you are not changing the name or artist, make sure the song is selected)");
+		    				alert.showAndWait();
+		    				editSongDetails(event);
+		    				return;
+	    				}
+    	        		
     	        	}
     	        }
 
@@ -404,9 +419,20 @@ public class Controller {
     			selectedSong.put("album",newAlbumName.getText());
     			selectedSong.put("year",newYearDate.getText());
     			
-    			obsList.set(index, songName.getText() + " - " + artistName.getText());
+    			System.out.println("SIZE: " + obsList.size());
     			
     			
+    			try {
+    				obsList.set(index, selectedSong.get("name") + " - " + selectedSong.get("artist"));
+    			} catch(NullPointerException f){
+    				
+    			}
+    				
+    			
+    			//Collections.sort(obsList);
+    			
+    			int newIndex = listView.getItems().indexOf(songName.getText() + " - " + artistName.getText());
+    			listView.getSelectionModel().select(newIndex);
     			
     			newSongName.setVisible(false);
     			newAlbumName.setVisible(false);
@@ -508,7 +534,17 @@ public class Controller {
     	}
     	
     	
+    	newSongName.setVisible(false);
+    	newSongName.clear();
+    	newArtistName.setVisible(false);
+    	newArtistName.clear();
+    	newAlbumName.setVisible(false);
+    	newAlbumName.clear();
+    	newYearDate.setVisible(false);
+    	newYearDate.clear();
     	
+    	
+    	saveSong.setVisible(false);
     	
     	
         	
