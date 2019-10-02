@@ -15,7 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*; 
 
-public class Main extends Application {
+public class SongLib extends Application {
 
 	public static Stage primaryStage;
     @Override
@@ -50,11 +50,13 @@ public class Main extends Application {
 
     private void closeWindowEvent(WindowEvent event) throws Exception{
     	
-    	JSONObject obj=(JSONObject) Controller.obj;
+    	JSONObject obj=(JSONObject) Controller.getSong;
     	
-        FileWriter file = new FileWriter("songs.json");
+        FileWriter file = new FileWriter("./src/SongLib/songs.json");
         file.write(obj.toJSONString());
         file.flush();
+        
+        //file.close();
 
     }
 
