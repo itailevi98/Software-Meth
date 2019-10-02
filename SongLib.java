@@ -15,7 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*; 
 
-public class Main extends Application {
+public class SongLib extends Application {
 
 	public static Stage primaryStage;
     @Override
@@ -55,6 +55,8 @@ public class Main extends Application {
         FileWriter file = new FileWriter("songs.json");
         file.write(obj.toJSONString());
         file.flush();
+        
+        //file.close();
 
     }
 

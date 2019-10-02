@@ -183,7 +183,7 @@ public class Controller {
 			public void handle(ActionEvent e) {
     			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
     				Alert alert = new Alert(AlertType.INFORMATION);
-    				alert.initOwner(Main.primaryStage);
+    				alert.initOwner(SongLib.primaryStage);
     				alert.setTitle("Empty Song/Artist");
     				alert.setHeaderText("You cannot leave a song or artist name empty. Please input a name for the song/artist.");
     				alert.showAndWait();
@@ -199,7 +199,7 @@ public class Controller {
     	        	if(song.get("name").equals(newSongName.getText())) {
     	        		if(song.get("artist").equals(newArtistName.getText())) {
     	    				Alert alert = new Alert(AlertType.INFORMATION);
-    	    				alert.initOwner(Main.primaryStage);
+    	    				alert.initOwner(SongLib.primaryStage);
     	    				alert.setTitle("Duplicate Song");
     	    				alert.setHeaderText("You cannot add a duplicate song. Please try again");
     	    				alert.showAndWait();
@@ -211,7 +211,7 @@ public class Controller {
     	        
     	        
     			Alert confirmation = new Alert(AlertType.CONFIRMATION);
-    			confirmation.initOwner(Main.primaryStage);
+    			confirmation.initOwner(SongLib.primaryStage);
     			confirmation.setTitle("Confirm?");
     			confirmation.setHeaderText("Are you sure you want to add this song");
     			
@@ -262,7 +262,7 @@ public class Controller {
 				System.out.println("index: " + index);
 				listView.getSelectionModel().select(index);
     			if(listView.getItems().size() == 1) {
-    				showItem(Main.primaryStage);
+    				showItem(SongLib.primaryStage);
     			}
 			
     	    	
@@ -319,7 +319,7 @@ public class Controller {
     public void editSongDetails(ActionEvent event){
     	if(listView.getItems().size() == 0) {
     		Alert noSongAlert = new Alert(AlertType.INFORMATION);
-    		noSongAlert.initOwner(Main.primaryStage);
+    		noSongAlert.initOwner(SongLib.primaryStage);
     		noSongAlert.setTitle("Unable to Perform Function");
     		noSongAlert.setHeaderText("There are no songs selected to edit.");
     		noSongAlert.showAndWait();
@@ -358,7 +358,7 @@ public class Controller {
 			public void handle(ActionEvent e) {
     			if(newSongName.getText().isEmpty() || newArtistName.getText().isEmpty()) {
     				Alert alert = new Alert(AlertType.INFORMATION);
-    				alert.initOwner(Main.primaryStage);
+    				alert.initOwner(SongLib.primaryStage);
     				alert.setTitle("Empty Song/Artist");
     				alert.setHeaderText("You cannot leave a song or artist name empty. Please input a name for the song/artist.");
     				alert.showAndWait();
@@ -378,7 +378,7 @@ public class Controller {
 	    				}
     	        		else {
 	    	        		Alert alert = new Alert(AlertType.INFORMATION);
-		    				alert.initOwner(Main.primaryStage);
+		    				alert.initOwner(SongLib.primaryStage);
 		    				alert.setTitle("Duplicate Song");
 		    				alert.setHeaderText("You cannot edit a song with the same name/artist as another song. Please try again.");
 		    				alert.setContentText("(If you are editing the same song and you are not changing the name or artist, make sure the song is selected)");
@@ -394,7 +394,7 @@ public class Controller {
     			
 
     			Alert confirmation = new Alert(AlertType.CONFIRMATION);
-    			confirmation.initOwner(Main.primaryStage);
+    			confirmation.initOwner(SongLib.primaryStage);
     			confirmation.setTitle("Confirm?");
     			confirmation.setHeaderText("Are you sure you want to edit the song's details?");
     			
@@ -488,7 +488,7 @@ public class Controller {
 	public void deleteSong(ActionEvent event) {
     	if(listView.getItems().size() == 0) {
     		Alert noSongAlert = new Alert(AlertType.INFORMATION);
-    		noSongAlert.initOwner(Main.primaryStage);
+    		noSongAlert.initOwner(SongLib.primaryStage);
     		noSongAlert.setTitle("Unable to Perform Function");
     		noSongAlert.setHeaderText("There are no songs selected to delete.");
     		noSongAlert.showAndWait();
@@ -496,7 +496,7 @@ public class Controller {
     	}
     	
     	Alert confirmation = new Alert(AlertType.CONFIRMATION);
-    	confirmation.initOwner(Main.primaryStage);
+    	confirmation.initOwner(SongLib.primaryStage);
     	confirmation.setTitle("Delete Song?");
     	confirmation.setHeaderText("Are you sure you want to delete this song?");
     	
