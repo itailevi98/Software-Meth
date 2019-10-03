@@ -48,17 +48,17 @@ public class Controller {
     
     public void initialize(Stage primaryStage) throws Exception{
     	
-    	File f = new File("./src/SongLib/songs.json");
+    	File f = new File("songs.json");
     	if(!f.exists()){
     	  f.createNewFile();
-          FileWriter file = new FileWriter("./src/SongLib/songs.json");
+          FileWriter file = new FileWriter("songs.json");
     	  file.write("{\"songList\":[]}");
     	  file.flush();
     	  file.close();
     	}
 
     	//get object from document
-        getSong = (JSONObject) new JSONParser().parse(new FileReader("./src/SongLib/songs.json")); 
+        getSong = (JSONObject) new JSONParser().parse(new FileReader("songs.json")); 
         
         //get json array from object.
         songList = (JSONArray) getSong.get("songList");
@@ -110,7 +110,6 @@ public class Controller {
     	albumName.setVisible(true);
     	songYear.setVisible(true);
     	listView.setItems(obsList);
-    	System.out.println(listView.getItems().size());
     	if(listView.getItems().size() == 0) { System.out.println("returning"); return; }
     	//if(listView.getItems().size() == 1) { System.out.println("one song"); listView.getSelectionModel().select(0);}
     	String content[] = new String[2];

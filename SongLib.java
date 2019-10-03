@@ -52,7 +52,7 @@ public class SongLib extends Application {
     	
     	JSONObject obj=(JSONObject) Controller.getSong;
     	
-        FileWriter file = new FileWriter("./src/SongLib/songs.json");
+        FileWriter file = new FileWriter("songs.json");
         file.write(obj.toJSONString());
         file.flush();
         
