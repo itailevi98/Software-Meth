@@ -120,13 +120,8 @@ public class Controller {
     	try {
     	content = listView.getSelectionModel().getSelectedItem().split(" - ");
     	}catch(NullPointerException f) {
-    		System.out.println("EXCEPTION: ");
-			for(int i = 0; i < listView.getItems().size(); i++) {
-				System.out.println(listView.getItems().get(i));
-			}
+    	
     	}    	
-    	System.out.println("Artist: " + content[1]);
-    	System.out.println("Name: " + content[0]);
     	
     	//if(listView.getSelectionModel().getSelectedIndex() == 0) selectedSong = (JSONObject) songList.get(0);
     	
@@ -203,6 +198,7 @@ public class Controller {
     				addSong(event);
     				return;
     			}
+    			
     			if(!isNumeric((String)newYearDate.getText())) {
     				Alert alert = new Alert(AlertType.INFORMATION);
     				alert.initOwner(SongLib.primaryStage);
@@ -273,8 +269,7 @@ public class Controller {
     			
     			songList.add(newSong);
     			
-    			sortJSONArray(songList);
-    			
+    			sortJSONArray(songList); 			
     			Collections.sort(obsList);
     			
     			
@@ -402,6 +397,7 @@ public class Controller {
     	        
     	        while(songIterator.hasNext()) {
     	        	JSONObject song = (JSONObject) songIterator.next();
+    	        	
     	        	if(((String)song.get("name")).toLowerCase().equals(newSongName.getText().toLowerCase().trim()) 
     	        			&& ((String)song.get("artist")).toLowerCase().equals(newArtistName.getText().toLowerCase().trim())) {
 	    				
@@ -601,6 +597,9 @@ public class Controller {
     	newYearDate.clear();
     	
     	saveSong.setVisible(false);	
+    	    	
+    	
+    	
     }
 	
 	
@@ -614,9 +613,18 @@ public class Controller {
 				String name2 = (String) song2.get("name");
 				
 				int comp = name1.compareTo(name2);
-				return comp;	
+				return comp;
+				
 			}
+			
+			
+			
 		};
+		
 		Collections.sort(songList, comparison);
+	
 	}
+    
+   
+    
 }	
